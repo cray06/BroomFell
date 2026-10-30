@@ -1,6 +1,5 @@
 class_name TornadoFx
 extends Node2D
-## Tornade : avance en zigzag, aspire les monstres proches et les blesse.
 
 const WIND := Color(0.88, 0.96, 1.0)
 const OUTLINE := Color("#253047")
@@ -41,7 +40,6 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 		return
 
-	# Trajet en zigzag qui rebondit sur les bords de l'arène.
 	direction = direction.rotated(sin(_age * 2.5) * 1.6 * delta)
 	position += direction * SPEED * delta
 	var bounds := spell._arena_bounds().grow(-60.0)

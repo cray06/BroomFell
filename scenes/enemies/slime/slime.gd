@@ -1,6 +1,5 @@
 class_name Slime
 extends CharacterBody2D
-## Slime qui avance par petits sauts, vers la sorcière quand elle est proche.
 
 signal died(enemy: Node2D)
 
@@ -18,12 +17,9 @@ const FROZEN_TINT := Color(0.6, 0.85, 1.4)
 @export var score_value := 10
 @export var xp_drop := 3
 
-## Rayon et centre du corps, utilisés par les sorts pour viser et toucher.
 var hit_radius := 24.0
 var center_offset := Vector2(0, -24)
-## Fourni par la scène principale.
 var target: Node2D
-## Slime de horde : teinté de rouge, chasse la sorcière partout.
 var horde := false
 var is_dead := false
 
@@ -68,7 +64,6 @@ func deals_contact_damage() -> bool:
 	return not is_dead and _frozen <= 0.0
 
 
-## Gèle le slime : il ne bouge plus et ne blesse plus.
 func freeze(duration: float) -> void:
 	if is_dead:
 		return
@@ -77,13 +72,11 @@ func freeze(duration: float) -> void:
 	sprite.self_modulate = FROZEN_TINT
 
 
-## Pousse le slime (tornade, explosions).
 func push(force: Vector2) -> void:
 	if not is_dead:
 		velocity += force
 
 
-## Appelé par les projectiles et les sorts.
 func take_hit(damage: int, from_direction: Vector2, crit: bool = false) -> void:
 	if is_dead:
 		return

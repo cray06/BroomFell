@@ -1,6 +1,5 @@
 class_name Tornado
 extends Spell
-## Lance des tornades qui se baladent, aspirent et blessent les monstres.
 
 const COUNT: Array[int] = [1, 1, 1, 2, 2]
 const DURATION: Array[float] = [3.0, 3.5, 4.0, 4.5, 5.0]

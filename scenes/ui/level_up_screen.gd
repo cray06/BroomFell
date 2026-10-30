@@ -1,6 +1,5 @@
 class_name LevelUpScreen
 extends Control
-## Écran de montée de niveau : 3 cartes de sorts à choisir.
 
 signal chosen(id: String)
 

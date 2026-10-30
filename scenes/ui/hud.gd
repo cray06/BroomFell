@@ -1,7 +1,5 @@
 class_name Hud
 extends CanvasLayer
-## Interface : barre d'XP, score, joystick, écrans de niveau et de défaite.
-## Tourne même quand le jeu est en pause.
 
 const OUTLINE := Color("#253047")
 const GOLD := Color("#FFE6A1")
@@ -83,7 +81,6 @@ func set_score(score: int) -> void:
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 
-## Flash plein écran (bombe, sablier...).
 func flash(color: Color, duration: float = 0.4) -> void:
 	_flash.color = Color(color, 0.75)
 	create_tween().tween_property(_flash, "color:a", 0.0, duration)

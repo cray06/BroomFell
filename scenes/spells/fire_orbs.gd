@@ -1,6 +1,5 @@
 class_name FireOrbs
 extends Spell
-## Boules de feu qui tournent autour de la sorcière.
 
 const COUNT: Array[int] = [2, 3, 3, 4, 5]
 const DAMAGE: Array[int] = [6, 6, 9, 9, 12]
@@ -15,7 +14,6 @@ const OUTLINE := Color("#253047")
 
 var _angle := 0.0
 var _time := 0.0
-## instance_id du monstre -> temps avant de pouvoir le retoucher
 var _cooldowns := {}
 
 
@@ -58,7 +56,6 @@ func _draw() -> void:
 		draw_circle(at + Vector2(-3, -3), 6.0 * flicker, CORE)
 
 
-## Positions locales des orbes, orbite aplatie pour la vue 3/4.
 func _orb_positions() -> PackedVector2Array:
 	var count := COUNT[_tier()]
 	var radius := ORBIT[_tier()]

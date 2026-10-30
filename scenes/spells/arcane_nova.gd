@@ -1,6 +1,5 @@
 class_name ArcaneNova
 extends Spell
-## Onde de choc autour de la sorcière qui blesse et repousse les monstres.
 
 const COOLDOWN: Array[float] = [3.2, 3.2, 3.0, 2.2, 2.0]
 const RADIUS: Array[float] = [140.0, 175.0, 175.0, 185.0, 230.0]

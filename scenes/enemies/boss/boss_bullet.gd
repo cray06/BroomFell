@@ -1,13 +1,11 @@
 class_name BossBullet
 extends Node2D
-## Boule de bave tirée par le boss. Blesse la sorcière au contact.
 
 const DANGER := Color("#F05B52")
 const GOO := Color("#A45CDA")
 const OUTLINE := Color("#253047")
 const RADIUS := 13.0
 const LIFETIME := 3.5
-## Centre du corps de la sorcière par rapport à ses pieds.
 const PLAYER_CENTER := Vector2(0, -20)
 const PLAYER_RADIUS := 22.0
 

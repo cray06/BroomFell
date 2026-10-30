@@ -1,12 +1,9 @@
 class_name AreaAttack
 extends Node2D
-## Zone d'attaque signalée au sol : un cercle rouge se remplit,
-## puis frappe. La sorcière doit en sortir avant l'impact.
 
 const DANGER := Color("#F05B52")
 const OUTLINE := Color("#253047")
 const GOO := Color("#A45CDA")
-## Le sol est vu en 3/4 : les zones sont des ellipses aplaties.
 const FLATTEN := 0.7
 const DROP_HEIGHT := 520.0
 
@@ -14,7 +11,6 @@ var radius := 100.0
 var delay := 1.0
 var damage := 20
 var target: Player
-## Une goutte tombe du ciel pendant la fin de l'attente.
 var falling := false
 
 var _t := 0.0
@@ -78,7 +74,6 @@ func _impact() -> void:
 	queue_free()
 
 
-## Goutte de bave qui tombe sur la zone, dessinée au-dessus des personnages.
 class FallingDrop extends Node2D:
 	var attack: AreaAttack
 

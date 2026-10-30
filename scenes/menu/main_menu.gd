@@ -1,6 +1,4 @@
 extends Node2D
-## Page d'accueil : logo, sorcière qui vole, boutons Jouer / Quitter,
-## meilleur score. Le décor du jeu tourne en fond, flouté.
 
 const GAME_SCENE := "res://scenes/main/main.tscn"
 const SLIME_SCENE := preload("res://scenes/enemies/slime/slime.tscn")
@@ -59,7 +57,6 @@ func _build_ui() -> void:
 	ui.add_child(blur)
 	blur.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
-	# Sorcière sur son balai, avec une traînée d'étincelles.
 	_witch = Sprite2D.new()
 	_witch.texture = WITCH
 	_witch.scale = Vector2(1.5, 1.5)
@@ -124,7 +121,6 @@ func _build_ui() -> void:
 	version.offset_top = -60
 	version.offset_bottom = -24
 
-	# Fondu d'ouverture.
 	_fade = ColorRect.new()
 	_fade.color = OUTLINE
 	_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -132,7 +128,6 @@ func _build_ui() -> void:
 	_fade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	create_tween().tween_property(_fade, "color:a", 0.0, 0.5)
 
-	# Le bouton Jouer respire pour attirer l'œil.
 	play.resized.connect(func() -> void: play.pivot_offset = play.size / 2.0)
 	var pulse := create_tween().set_loops()
 	pulse.tween_property(play, "scale", Vector2(1.05, 1.05), 0.7).set_trans(Tween.TRANS_SINE)

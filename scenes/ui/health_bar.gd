@@ -1,6 +1,5 @@
 class_name HealthBar
 extends Node2D
-## Barre de vie au-dessus d'un monstre. Une traînée claire suit la perte de vie.
 
 const OUTLINE := Color("#253047")
 const BACK := Color("#3A4763")

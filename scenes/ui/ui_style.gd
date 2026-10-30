@@ -1,6 +1,5 @@
 class_name UiStyle
 extends RefCounted
-## Styles partagés de l'interface (boutons cartoon).
 
 const OUTLINE := Color("#253047")
 

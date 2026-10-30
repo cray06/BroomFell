@@ -1,6 +1,5 @@
 class_name MeteorShower
 extends Spell
-## Des météores tombent sur les monstres proches.
 
 const COUNT: Array[int] = [1, 2, 2, 3, 4]
 const DAMAGE: Array[int] = [25, 25, 35, 35, 50]

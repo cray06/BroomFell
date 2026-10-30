@@ -1,6 +1,5 @@
 class_name GameLogo
 extends Control
-## Logo "BroomFell" en relief, qui flotte doucement, entouré d'étincelles.
 
 const TITLE := "BroomFell"
 const SUBTITLE := "Un roguelike magique"
@@ -8,7 +7,7 @@ const OUTLINE := Color("#253047")
 const GOLD := Color("#FFE6A1")
 const FIRE := Color("#FF9138")
 const TITLE_SIZE := 112
-const SPARKLES: Array[Vector3] = [  # x (0-1), y (px), déphasage
+const SPARKLES: Array[Vector3] = [
 	Vector3(0.12, 40, 0.0), Vector3(0.88, 60, 1.4), Vector3(0.2, 170, 2.6),
 	Vector3(0.82, 160, 3.7), Vector3(0.5, 10, 5.0), Vector3(0.05, 110, 4.2),
 ]
@@ -30,7 +29,6 @@ func _draw() -> void:
 	var baseline := Vector2(0, 140 + sin(_time * 1.6) * 5.0)
 	var w := size.x
 
-	# Relief : plusieurs couches de contour décalées vers le bas.
 	for depth in [12, 9, 6, 3]:
 		draw_string_outline(font, baseline + Vector2(0, depth), TITLE, HORIZONTAL_ALIGNMENT_CENTER, w,
 				TITLE_SIZE, 28, OUTLINE)

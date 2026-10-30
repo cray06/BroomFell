@@ -1,6 +1,5 @@
 shader_type canvas_item;
 
-// Reflet diagonal qui balaie une carte aux coins arrondis.
 uniform vec2 rect_size = vec2(200.0, 330.0);
 uniform float radius = 22.0;
 uniform float inset = 5.0;

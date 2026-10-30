@@ -1,6 +1,5 @@
 class_name BroomBoomerang
 extends Spell
-## Lance des balais qui partent en boomerang puis reviennent vers la sorcière.
 
 const COUNT: Array[int] = [1, 1, 2, 2, 3]
 const DAMAGE: Array[int] = [10, 14, 14, 18, 22]

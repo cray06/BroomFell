@@ -1,6 +1,5 @@
 class_name PoisonPuddle
 extends Node2D
-## Flaque de poison au sol qui blesse les monstres régulièrement.
 
 const POISON := Color("#9BE15D")
 const POISON_DARK := Color("#5DA83A")
@@ -52,7 +51,6 @@ func _draw() -> void:
 	draw_circle(Vector2.ZERO, r, Color(POISON_DARK, 0.45 * fade))
 	draw_circle(Vector2(-r * 0.15, -r * 0.1), r * 0.75, Color(POISON, 0.45 * fade))
 	draw_set_transform(Vector2.ZERO)
-	# Bulles qui éclatent.
 	for i in 3:
 		var phase := fmod(_age * 1.3 + i * 0.33 + _seed, 1.0)
 		var at := Vector2(cos(_seed + i * 2.1), sin(_seed + i * 2.1) * FLATTEN) * r * 0.5

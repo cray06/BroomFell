@@ -1,6 +1,5 @@
 class_name Fx
 extends RefCounted
-## Effets ponctuels : gerbes de particules et chiffres de dégâts.
 
 const OUTLINE := Color("#253047")
 const LIGHT := Color("#FFE6A1")
@@ -9,7 +8,6 @@ const CRIT := Color("#FF9138")
 static var _dot_texture: Texture2D
 
 
-## Petit disque blanc à bords doux, teinté par la couleur des particules.
 static func dot_texture() -> Texture2D:
 	if _dot_texture == null:
 		var gradient := Gradient.new()

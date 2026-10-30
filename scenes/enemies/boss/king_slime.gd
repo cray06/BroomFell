@@ -1,7 +1,5 @@
 class_name KingSlime
 extends CharacterBody2D
-## Le Roi Gluant. Tombe du ciel, avance vers la sorcière et enchaîne
-## trois attaques de zone. Devient enragé sous 50 % de vie.
 
 signal died(enemy: Node2D)
 
@@ -14,7 +12,6 @@ const DANGER := Color("#F05B52")
 const SPRITE_Y := -76.0
 const INTRO_FALL_TIME := 1.6
 const JUMP_HEIGHT := 280.0
-## Le boss s'arrête à cette distance de la sorcière (il ne se colle pas sur elle).
 const STOP_DISTANCE := 85.0
 
 @export var move_speed := 75.0
@@ -29,7 +26,6 @@ var hit_radius := 70.0
 var center_offset := Vector2(0, -75)
 var is_dead := false
 
-## Fournis par le WaveDirector.
 var target: Player
 var ground: Node2D
 var entities: Node2D
@@ -61,7 +57,6 @@ func deals_contact_damage() -> bool:
 	return _state == State.CHASE or (_state == State.ATTACK and not _airborne)
 
 
-## Chute depuis le ciel au centre de l'arène.
 func play_intro() -> void:
 	_state = State.INTRO
 	AreaAttack.spawn(ground, global_position, 170.0, INTRO_FALL_TIME, 25, target)
@@ -77,7 +72,6 @@ func play_intro() -> void:
 		_timer = 1.2)
 
 
-## Le boss résiste au gel : il est seulement ralenti.
 func freeze(duration: float) -> void:
 	if is_dead:
 		return
@@ -98,7 +92,6 @@ func take_hit(damage: int, _from_direction: Vector2, crit: bool = false) -> void
 func _physics_process(delta: float) -> void:
 	_time += delta
 	if _state != State.DEAD:
-		# Respiration du gros slime.
 		var breath := sin(_time * (5.0 if _enraged else 3.0)) * 0.04
 		sprite.scale = _sprite_scale * Vector2(1.0 + breath, 1.0 - breath)
 	if _slowed > 0.0:
@@ -139,7 +132,6 @@ func _start_attack() -> void:
 	_timer = 0.9 if _enraged else 1.6
 
 
-## Saute sur la position de la sorcière (deux fois quand il est enragé).
 func _attack_slam() -> void:
 	for jump in (2 if _enraged else 1):
 		if is_dead or not _target_alive():
@@ -165,7 +157,6 @@ func _attack_slam() -> void:
 		await _wait(0.35)
 
 
-## Fait pleuvoir des gouttes de bave autour de la sorcière.
 func _attack_rain() -> void:
 	await _roar()
 	var count := 11 if _enraged else 7
@@ -180,9 +171,7 @@ func _attack_rain() -> void:
 	await _wait(0.9)
 
 
-## Se charge puis tire des cercles de boules de bave.
 func _attack_burst() -> void:
-	# Charge : le boss clignote et gonfle.
 	var charge := create_tween()
 	for i in 3:
 		charge.tween_property(sprite, "material:shader_parameter/flash_amount", 0.7, 0.12)
@@ -240,7 +229,6 @@ func _spawn_minions(count: int) -> void:
 		slime.xp_drop = 1
 		slime.position = _clamp_to_arena(global_position + Vector2.from_angle(randf() * TAU) * 120.0)
 		entities.add_child(slime)
-		# Le WaveDirector écoute la mort de tous les ennemis du groupe.
 		get_tree().call_group("wave_director", "track_enemy", slime)
 
 
@@ -292,7 +280,6 @@ func _on_died() -> void:
 	_kill_visual_tween()
 	died.emit(self)
 
-	# Série d'explosions, puis grosse explosion finale.
 	var tween := create_tween()
 	for i in 6:
 		tween.tween_callback(func() -> void:

@@ -1,7 +1,5 @@
 class_name Arena
 extends Node2D
-## Arène simple : sol en herbe, murs de pierre et obstacles.
-## La graine fixe donne toujours la même map.
 
 const GRASS := Color("#5AA55A")
 const GRASS_DARK := Color("#4F9852")
@@ -16,7 +14,6 @@ const FLOWER_COLORS: Array[Color] = [Color("#FFE6A1"), Color("#A45CDA"), Color("
 @export var wall_thickness := 64.0
 @export var obstacle_count := 12
 @export var map_seed := 7
-## Zone libre au centre, où la sorcière apparaît.
 @export var spawn_clearance := 240.0
 
 var bounds: Rect2:
@@ -29,7 +26,6 @@ var _tufts: Array[Vector2] = []
 var _flowers: Array[Dictionary] = []
 
 
-## Construit la map. Les obstacles vont dans `entities` pour le tri en profondeur.
 func generate(entities: Node2D) -> void:
 	add_to_group("arena")
 	var rng := RandomNumberGenerator.new()
@@ -40,7 +36,6 @@ func generate(entities: Node2D) -> void:
 	queue_redraw()
 
 
-## Vrai si un cercle de ce rayon tient à cet endroit sans toucher d'obstacle.
 func is_free(at: Vector2, radius: float) -> bool:
 	if not bounds.grow(-radius - 20.0).has_point(at):
 		return false
@@ -104,7 +99,6 @@ func _place_decor(rng: RandomNumberGenerator) -> void:
 
 func _draw() -> void:
 	var t := wall_thickness
-	# Sol
 	draw_rect(bounds, GRASS)
 	for patch in _patches:
 		var color: Color = SAND if patch.sand else GRASS_DARK
@@ -119,12 +113,10 @@ func _draw() -> void:
 		draw_circle(flower.at, 4.5, flower.color)
 		draw_circle(flower.at, 1.8, Color.WHITE)
 
-	# Ombre portée des murs sur l'herbe (vue 3/4 : le mur du haut projette plus d'ombre).
 	draw_rect(Rect2(0, 0, size.x, 22), Color(OUTLINE, 0.22))
 	draw_rect(Rect2(0, 0, 10, size.y), Color(OUTLINE, 0.15))
 	draw_rect(Rect2(size.x - 10, 0, 10, size.y), Color(OUTLINE, 0.15))
 
-	# Murs de pierre
 	var outer := bounds.grow(t)
 	for wall in [Rect2(outer.position, Vector2(outer.size.x, t)),
 			Rect2(outer.position.x, size.y, outer.size.x, t),

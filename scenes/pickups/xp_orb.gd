@@ -1,7 +1,5 @@
 class_name XpOrb
 extends Node2D
-## Petite gemme d'XP lâchée par un monstre. Elle est aspirée
-## quand la sorcière passe à proximité.
 
 signal collected(value: int)
 
@@ -13,7 +11,6 @@ const BODY_HEIGHT := Vector2(0, -30)
 
 @export var value := 1
 
-## Fourni par la scène principale.
 var target: Player
 
 var _velocity := Vector2.ZERO
@@ -29,7 +26,6 @@ func launch(initial_velocity: Vector2) -> void:
 	_velocity = initial_velocity
 
 
-## Aspirée immédiatement (objet Aimant).
 func attract() -> void:
 	_magnetized = true
 

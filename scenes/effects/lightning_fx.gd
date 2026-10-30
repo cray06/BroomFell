@@ -1,6 +1,5 @@
 class_name LightningFx
 extends Node2D
-## Tracé d'éclair en zigzag qui crépite puis s'efface.
 
 const GLOW := Color("#39C9F0")
 const BOLT := Color("#FFE6A1")

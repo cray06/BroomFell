@@ -1,7 +1,5 @@
 class_name XpBar
 extends Control
-## Barre d'XP en haut de l'écran, avec un badge de niveau à gauche.
-## Passe en arc-en-ciel animé quand elle est pleine.
 
 const OUTLINE := Color("#253047")
 const BADGE := Color("#FFE6A1")
@@ -83,7 +81,6 @@ func _layout() -> void:
 	queue_redraw()
 
 
-## Rond jaune avec le numéro du niveau.
 class LevelBadge extends Control:
 	var level := 1
 

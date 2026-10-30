@@ -39,7 +39,6 @@ jobs:
             -keyalg RSA -keysize 2048 -validity 10000 \
             -dname "CN=Android Debug,O=Android,C=US"
 
-          # Godot lit le chemin du SDK dans ses réglages d'éditeur.
           mkdir -p "$HOME/.config/godot"
           for name in editor_settings-4.tres "editor_settings-${GODOT_VERSION%.*}.tres"; do
             cat > "$HOME/.config/godot/$name" <<EOF

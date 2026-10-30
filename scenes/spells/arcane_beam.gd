@@ -1,6 +1,5 @@
 class_name ArcaneBeam
 extends Spell
-## Rayons magiques qui tournent en permanence autour de la sorcière.
 
 const BEAMS: Array[int] = [1, 1, 2, 2, 3]
 const LENGTH: Array[float] = [200.0, 240.0, 240.0, 280.0, 300.0]
@@ -56,7 +55,6 @@ func _draw() -> void:
 	draw_circle(Vector2(-3, -3), 4.0, Color.WHITE)
 
 
-## Bouts des rayons (orbite aplatie pour la vue 3/4).
 func _beam_ends() -> PackedVector2Array:
 	var count := BEAMS[_tier()]
 	var length := LENGTH[_tier()]

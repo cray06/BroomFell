@@ -1,7 +1,5 @@
 class_name SpellBook
 extends Node2D
-## Sorts et augments de la sorcière (3 emplacements chacun).
-## Propose les choix de montée de niveau et applique celui qui est choisi.
 
 signal changed
 
@@ -110,11 +108,10 @@ const HEAL_OFFER := {
 	"description": "Récupère 30 PV.",
 }
 
-## Fourni par la sorcière.
 var player: Player
 
-var _spells := {}  # id -> Spell
-var _augments := {}  # id -> niveau
+var _spells := {}
+var _augments := {}
 
 
 func level_of(id: String) -> int:
@@ -123,8 +120,6 @@ func level_of(id: String) -> int:
 	return _augments.get(id, 0)
 
 
-## Choix de montée de niveau : au moins un sort et un augment quand c'est possible.
-## Une fois les 3 emplacements pleins, seuls les éléments possédés sont proposés.
 func get_offers(count: int) -> Array[Dictionary]:
 	var spell_offers := _eligible(SPELLS, "spell", _spells.size() < MAX_SPELLS)
 	var augment_offers := _eligible(AUGMENTS, "augment", _augments.size() < MAX_AUGMENTS)
@@ -166,7 +161,6 @@ func learn(id: String) -> void:
 	changed.emit()
 
 
-## Ce que possède la sorcière, pour l'affichage des emplacements.
 func snapshot() -> Dictionary:
 	var spells: Array[Dictionary] = []
 	for id in _spells:

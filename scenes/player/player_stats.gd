@@ -1,7 +1,5 @@
 class_name PlayerStats
 extends RefCounted
-## Statistiques de la sorcière, modifiées par les augments.
-## Les sorts et les projectiles les lisent au moment de frapper.
 
 var projectile_count := 1
 var back_shots := 0
@@ -15,6 +13,5 @@ var move_speed_mult := 1.0
 var regen_per_second := 0.0
 var lifesteal_chance := 0.0
 var cooldown_mult := 1.0
-## 0 = pas de bouclier. Sinon, temps de recharge du bouclier en secondes.
 var shield_interval := 0.0
 var pickup_radius_mult := 1.0

@@ -1,7 +1,5 @@
 class_name Obstacle
 extends StaticBody2D
-## Rocher ou buisson. Bloque les déplacements et les projectiles.
-## Placé avec les personnages pour être trié en profondeur (y-sort).
 
 enum Kind { ROCK, BUSH }
 
@@ -49,7 +47,7 @@ func _draw_rock() -> void:
 
 
 func _draw_bush() -> void:
-	var blobs: Array[Vector3] = [  # x, y, rayon
+	var blobs: Array[Vector3] = [
 		Vector3(-0.45, -0.45, 0.62),
 		Vector3(0.45, -0.45, 0.62),
 		Vector3(0.0, -0.85, 0.7),

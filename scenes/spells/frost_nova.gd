@@ -1,6 +1,5 @@
 class_name FrostNova
 extends Spell
-## Onde de givre qui gèle les monstres autour de la sorcière.
 
 const RADIUS: Array[float] = [150.0, 170.0, 190.0, 210.0, 240.0]
 const FREEZE: Array[float] = [1.5, 1.8, 2.0, 2.3, 2.6]

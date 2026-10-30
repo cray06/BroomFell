@@ -1,6 +1,5 @@
 class_name GameOverScreen
 extends Control
-## Écran de défaite : score, niveau atteint et bouton pour rejouer.
 
 signal restart_requested
 signal menu_requested

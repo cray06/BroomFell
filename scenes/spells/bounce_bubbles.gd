@@ -1,6 +1,5 @@
 class_name BounceBubbles
 extends Spell
-## Envoie des bulles qui rebondissent sur les murs de l'arène.
 
 const COUNT: Array[int] = [2, 3, 3, 4, 5]
 const DAMAGE: Array[int] = [8, 8, 11, 11, 14]

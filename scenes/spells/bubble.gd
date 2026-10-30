@@ -1,6 +1,5 @@
 class_name Bubble
 extends Node2D
-## Bulle qui traverse les monstres et rebondit sur les murs.
 
 const COLOR := Color("#7FD8F5")
 const OUTLINE := Color("#253047")

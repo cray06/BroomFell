@@ -1,6 +1,5 @@
 class_name HealthComponent
 extends Node
-## Points de vie réutilisables. Émet des signaux, ne connaît pas son parent.
 
 signal health_changed(current: int, maximum: int)
 signal died

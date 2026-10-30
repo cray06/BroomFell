@@ -1,6 +1,5 @@
 class_name NovaFx
 extends Node2D
-## Anneau magique qui s'étend puis disparaît.
 
 const ARCANE := Color("#A45CDA")
 const DURATION := 0.35

@@ -1,6 +1,5 @@
 shader_type canvas_item;
 
-// Remplissage de la barre d'XP. `rainbow` à 1 = barre pleine en arc-en-ciel animé.
 uniform float ratio = 0.0;
 uniform float rainbow = 0.0;
 uniform vec2 rect_size = vec2(600.0, 24.0);

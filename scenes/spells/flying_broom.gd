@@ -1,6 +1,5 @@
 class_name FlyingBroom
 extends Node2D
-## Balai lancé en boomerang : part loin, ralentit, puis revient vers la sorcière.
 
 const HANDLE := Color("#E6C58D")
 const BRISTLES := Color("#FFE6A1")

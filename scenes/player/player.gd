@@ -1,8 +1,5 @@
 class_name Player
 extends CharacterBody2D
-## La sorcière. Se déplace au joystick (ou ZQSD / WASD / flèches),
-## tire automatiquement dans la direction où elle regarde,
-## et perd des PV quand un monstre la touche.
 
 signal hurt
 signal died
@@ -27,7 +24,6 @@ const DEATH_SPARK := Color("#A45CDA")
 @export var hurt_knockback := 420.0
 @export var bolt_scene: PackedScene
 
-## Fourni par la scène principale.
 var joystick: TouchJoystick
 var facing := Vector2.UP
 var is_dead := false
@@ -89,7 +85,6 @@ func _physics_process(delta: float) -> void:
 func _draw() -> void:
 	if is_dead:
 		return
-	# Flèche de visée au sol, aplatie pour suivre la vue 3/4.
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.6))
 	draw_arc(Vector2.ZERO, 48.0, 0.0, TAU, 48, Color(1, 1, 1, 0.25), 3.0, true)
 	var dir := Vector2.from_angle(_aim_angle)
@@ -100,7 +95,6 @@ func _draw() -> void:
 	draw_polyline(arrow, OUTLINE, 3.0, true)
 
 
-## Dégâts finaux d'une attaque : puissance et chance de critique.
 func roll_damage(base: int) -> Dictionary:
 	var amount := float(base) * stats.damage_mult
 	var crit := randf() < stats.crit_chance
@@ -142,7 +136,6 @@ func add_max_health(amount: int) -> void:
 	heal(amount)
 
 
-## Appelé à chaque monstre tué (vampirisme).
 func on_kill() -> void:
 	if stats.lifesteal_chance > 0.0 and randf() < stats.lifesteal_chance:
 		health.heal(3)
@@ -192,7 +185,6 @@ func _update_invulnerability(delta: float) -> void:
 	if _invulnerable <= 0.0:
 		return
 	_invulnerable -= delta
-	# Clignotement pendant l'invincibilité.
 	var blink_on := int(_invulnerable * 20.0) % 2 == 0
 	visual.modulate.a = 0.35 if blink_on and _invulnerable > 0.0 else 1.0
 
@@ -233,12 +225,10 @@ func _animate(delta: float) -> void:
 
 	_anim_time += delta
 	if velocity.length() > 20.0:
-		# Marche : petits rebonds et balancement.
 		body_sprite.position.y = SPRITE_Y - absf(sin(_anim_time * 14.0)) * 6.0
 		body_sprite.rotation = sin(_anim_time * 14.0) * 0.08
 		body_sprite.scale = _sprite_scale
 	else:
-		# Repos : respiration légère.
 		var weight := minf(1.0, 12.0 * delta)
 		body_sprite.position.y = lerpf(body_sprite.position.y, SPRITE_Y, weight)
 		body_sprite.rotation = lerpf(body_sprite.rotation, 0.0, weight)
@@ -312,7 +302,6 @@ func _on_died() -> void:
 	tween.parallel().tween_property(visual, "scale", Vector2.ZERO, 0.6).set_ease(Tween.EASE_IN)
 
 
-## Bulle autour de la sorcière : dorée = invincible, bleue = bouclier prêt.
 class ShieldBubble extends Node2D:
 	const GOLD := Color("#FFE6A1")
 	const BLUE := Color("#39C9F0")
@@ -325,7 +314,6 @@ class ShieldBubble extends Node2D:
 	func _draw() -> void:
 		var color: Color
 		if player.has_bubble():
-			# Clignote quand l'effet va se terminer.
 			if player.bubble_time_left() < 1.2 and int(_time * 10.0) % 2 == 0:
 				return
 			color = GOLD

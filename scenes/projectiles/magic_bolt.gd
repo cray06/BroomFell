@@ -1,7 +1,5 @@
 class_name MagicBolt
 extends Area2D
-## Projectile magique. Va tout droit, peut perforer les monstres
-## ou ricocher vers un autre, et utilise les critiques de la sorcière.
 
 const CORE := Color.WHITE
 const OUTLINE := Color("#253047")
@@ -12,7 +10,6 @@ const RICOCHET_RANGE := 320.0
 @export var lifetime := 1.1
 
 var direction := Vector2.RIGHT
-## La sorcière : sert à calculer les dégâts (puissance, critiques).
 var source: Player
 var pierce := 0
 var ricochet := 0

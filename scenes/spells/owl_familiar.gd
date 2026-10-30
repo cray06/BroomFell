@@ -1,6 +1,5 @@
 class_name OwlFamiliar
 extends Spell
-## Petit hibou qui vole près de la sorcière et tire des plumes magiques.
 
 const INTERVAL: Array[float] = [1.0, 0.85, 0.7, 0.6, 0.45]
 const DAMAGE: Array[int] = [8, 10, 12, 14, 18]
@@ -47,7 +46,6 @@ func _physics_process(delta: float) -> void:
 func _draw() -> void:
 	var flap := sin(_time * 14.0) * 0.4
 	var side := -1.0 if _facing_left else 1.0
-	# Ailes
 	for wing in [-1.0, 1.0]:
 		var base := Vector2(16.0 * wing, 2.0)
 		var tip := base + Vector2(14.0 * wing, -6.0 + flap * 10.0)
@@ -55,21 +53,17 @@ func _draw() -> void:
 		draw_colored_polygon(wing_shape, BODY.darkened(0.15))
 		wing_shape.append(wing_shape[0])
 		draw_polyline(wing_shape, OUTLINE, 3.0, true)
-	# Corps
 	draw_circle(Vector2.ZERO, 21.0, OUTLINE)
 	draw_circle(Vector2.ZERO, 18.0, BODY)
 	draw_circle(Vector2(0, 7), 11.0, BELLY)
-	# Aigrettes
 	for ear in [-1.0, 1.0]:
 		var tuft := PackedVector2Array([Vector2(9 * ear, -13), Vector2(15 * ear, -26), Vector2(3 * ear, -16)])
 		draw_colored_polygon(tuft, BODY)
 		tuft.append(tuft[0])
 		draw_polyline(tuft, OUTLINE, 3.0, true)
-	# Yeux
 	for eye in [-1.0, 1.0]:
 		var at := Vector2(7.0 * eye, -5.0)
 		draw_circle(at, 7.5, OUTLINE)
 		draw_circle(at, 6.0, FEATHER)
 		draw_circle(at + Vector2(side * 1.5, 0), 3.0, OUTLINE)
-	# Bec
 	draw_colored_polygon(PackedVector2Array([Vector2(-3, 1), Vector2(3, 1), Vector2(0, 7)]), BEAK)

@@ -1,7 +1,5 @@
 class_name SpellImpact
 extends Node2D
-## Météore : une zone orange se dessine au sol, puis le météore s'écrase
-## et blesse les monstres dans la zone.
 
 const FIRE := Color("#FF9138")
 const LIGHT := Color("#FFE6A1")
@@ -70,7 +68,6 @@ func _explode() -> void:
 	queue_free()
 
 
-## Boule de feu qui tombe du ciel, dessinée au-dessus des personnages.
 class Meteor extends Node2D:
 	var impact: SpellImpact
 

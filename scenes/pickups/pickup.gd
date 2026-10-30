@@ -1,6 +1,5 @@
 class_name Pickup
 extends Node2D
-## Objet lâché par un monstre (aimant, bombe, cœur...). Ramassé au contact.
 
 signal collected(kind: String)
 
@@ -54,7 +53,6 @@ func _physics_process(delta: float) -> void:
 
 
 func _draw() -> void:
-	# Clignote avant de disparaître.
 	if kind != "chest" and _age > LIFETIME - 3.0 and int(_age * 8.0) % 2 == 0:
 		return
 	var color: Color = COLORS.get(kind, Color.WHITE)

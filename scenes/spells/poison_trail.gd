@@ -1,6 +1,5 @@
 class_name PoisonTrail
 extends Spell
-## La sorcière laisse derrière elle des flaques de poison.
 
 const DURATION: Array[float] = [2.0, 2.5, 3.0, 3.5, 4.0]
 const DAMAGE: Array[int] = [3, 4, 5, 6, 8]

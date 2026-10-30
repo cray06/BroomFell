@@ -1,6 +1,4 @@
 extends Node2D
-## Scène de jeu : construit l'arène, relie les nœuds entre eux et gère la partie
-## (score, XP, montées de niveau, objets, défaite). Les ennemis sont gérés par le WaveDirector.
 
 const MENU_SCENE := "res://scenes/menu/main_menu.tscn"
 const HORDE_COLOR := Color("#FF9138")
@@ -8,7 +6,6 @@ const BOSS_COLOR := Color("#F05B52")
 const VICTORY_COLOR := Color("#FFE6A1")
 const ICE := Color("#9FE8FF")
 
-## Chance qu'un slime lâche un objet, et poids de chaque objet.
 const DROP_CHANCE := 0.05
 const DROP_WEIGHTS := {
 	"heart": 25,
@@ -77,7 +74,6 @@ func _required_xp() -> int:
 
 
 func _drop_xp(at: Vector2, count: int) -> void:
-	# Beaucoup de gemmes (boss) : on les lance plus loin.
 	var max_speed := 260.0 if count <= 5 else 520.0
 	for k in count:
 		var orb := XpOrb.new()

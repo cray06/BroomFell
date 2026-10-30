@@ -1,6 +1,5 @@
 class_name Banner
 extends Control
-## Grand bandeau d'annonce à rayures (horde, boss, victoire).
 
 const OUTLINE := Color("#253047")
 const BAND_HEIGHT := 120.0

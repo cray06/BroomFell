@@ -1,6 +1,5 @@
 class_name SaveData
 extends RefCounted
-## Sauvegarde locale du meilleur score.
 
 const PATH := "user://save.cfg"
 
@@ -12,7 +11,6 @@ static func best_score() -> int:
 	return int(config.get_value("scores", "best", 0))
 
 
-## Enregistre le score s'il bat le record. Renvoie vrai si c'est un nouveau record.
 static func submit_score(score: int) -> bool:
 	if score <= best_score():
 		return false

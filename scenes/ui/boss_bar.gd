@@ -1,6 +1,5 @@
 class_name BossBar
 extends Control
-## Barre de vie du boss, sous le score.
 
 const OUTLINE := Color("#253047")
 const TRACK := Color("#3A4763")
@@ -70,7 +69,6 @@ func _draw() -> void:
 	_draw_fill(bar, _lag_ratio, LAG)
 	_draw_fill(bar, _ratio, FILL)
 	_draw_fill(Rect2(bar.position, Vector2(bar.size.x, BAR_HEIGHT * 0.4)), _ratio, Color(1, 1, 1, 0.25))
-	# Repère de mi-vie (le boss s'énerve).
 	var mid := bar.position.x + bar.size.x / 2.0
 	draw_line(Vector2(mid, bar.position.y), Vector2(mid, bar.end.y), Color(OUTLINE, 0.6), 3.0)
 

@@ -1,6 +1,5 @@
 class_name LoadoutBar
 extends Control
-## Emplacements en bas de l'écran : 3 sorts (crème) et 3 augments (bleu nuit).
 
 const OUTLINE := Color("#253047")
 const CREAM := Color("#FFF6E0")
@@ -48,7 +47,6 @@ func _draw_slot(center: Vector2, item: Dictionary, background: Color) -> void:
 	draw_circle(center, SLOT_RADIUS, background)
 	draw_arc(center, SLOT_RADIUS - 3.0, 0.0, TAU, 32, color, 4.0, true)
 	SpellIcons.draw(self, item.id, center, SLOT_RADIUS * 1.25)
-	# Niveau dans une pastille.
 	var badge := center + Vector2(SLOT_RADIUS * 0.75, SLOT_RADIUS * 0.7)
 	draw_circle(badge, 12.0, OUTLINE)
 	draw_circle(badge, 9.5, LIGHT)

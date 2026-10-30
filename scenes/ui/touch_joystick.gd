@@ -1,7 +1,5 @@
 class_name TouchJoystick
 extends Control
-## Joystick flottant : il apparaît là où le doigt touche l'écran.
-## Sur PC, le clic souris fonctionne aussi (émulation tactile activée).
 
 const BASE_COLOR := Color(0.145, 0.188, 0.278, 0.35)
 const RING_COLOR := Color(1, 1, 1, 0.5)
@@ -12,7 +10,6 @@ const OUTLINE := Color("#253047")
 @export var knob_radius := 38.0
 @export_range(0.0, 1.0) var dead_zone := 0.15
 
-## Direction de -1 à 1 sur chaque axe. Vector2.ZERO si on ne touche pas.
 var output := Vector2.ZERO
 
 var _touch_index := -1
@@ -25,7 +22,6 @@ func _ready() -> void:
 
 
 func _notification(what: int) -> void:
-	# Le jeu se met en pause (montée de niveau) : on relâche le joystick.
 	if what == NOTIFICATION_PAUSED:
 		_touch_index = -1
 		output = Vector2.ZERO

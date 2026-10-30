@@ -1,7 +1,5 @@
 class_name SpellIcons
 extends RefCounted
-## Icônes vectorielles des sorts, augments et objets.
-## Toutes les tailles sont proportionnelles à `s` (taille de l'icône).
 
 const OUTLINE := Color("#253047")
 const LIGHT := Color("#FFE6A1")
@@ -19,7 +17,6 @@ const POISON := Color("#9BE15D")
 
 static func draw(ci: CanvasItem, id: String, c: Vector2, s: float) -> void:
 	match id:
-		# --- Sorts ---
 		"fire_orbs": _flame(ci, c, s)
 		"chain_lightning": _bolt(ci, c, s)
 		"arcane_nova": _nova(ci, c, s)
@@ -31,7 +28,6 @@ static func draw(ci: CanvasItem, id: String, c: Vector2, s: float) -> void:
 		"poison_trail": _poison(ci, c, s)
 		"arcane_beam": _beam(ci, c, s)
 		"bounce_bubbles": _bubbles(ci, c, s)
-		# --- Augments ---
 		"multishot": _multishot(ci, c, s)
 		"crit": _crit(ci, c, s)
 		"fire_rate": _chevrons(ci, c, s)
@@ -46,7 +42,6 @@ static func draw(ci: CanvasItem, id: String, c: Vector2, s: float) -> void:
 		"focus": _clock(ci, c, s)
 		"shield": _shield(ci, c, s)
 		"magnet", "pickup_magnet": _magnet(ci, c, s)
-		# --- Objets ---
 		"pickup_bomb": _bomb(ci, c, s)
 		"pickup_heart", "heal": _heart(ci, c, s, false)
 		"pickup_hourglass": _hourglass(ci, c, s)
@@ -55,8 +50,6 @@ static func draw(ci: CanvasItem, id: String, c: Vector2, s: float) -> void:
 		"pickup_chest": _chest(ci, c, s)
 		_: _heart(ci, c, s, false)
 
-
-# ---------- Outils ----------
 
 static func _w(s: float) -> float:
 	return maxf(2.0, s * 0.055)
@@ -115,8 +108,6 @@ static func _orb(ci: CanvasItem, c: Vector2, r: float, color: Color, s: float) -
 	_disc(ci, c, r, color, s)
 	ci.draw_circle(c + Vector2(-r, -r) * 0.3, r * 0.35, Color(1, 1, 1, 0.75))
 
-
-# ---------- Sorts ----------
 
 static func _flame(ci: CanvasItem, c: Vector2, s: float) -> void:
 	_filled(ci, _teardrop(c + Vector2(0, s * 0.05), s * 0.5, s * 0.3), FIRE, s)
@@ -209,8 +200,6 @@ static func _bubbles(ci: CanvasItem, c: Vector2, s: float) -> void:
 		ci.draw_arc(at, r, 0.0, TAU, 32, OUTLINE, _w(s), true)
 		ci.draw_arc(at, r * 0.7, deg_to_rad(200), deg_to_rad(260), 10, Color.WHITE, _w(s), true)
 
-
-# ---------- Augments ----------
 
 static func _mini_bolt(ci: CanvasItem, from: Vector2, to: Vector2, s: float, color: Color) -> void:
 	ci.draw_line(from, to, Color(color, 0.5), s * 0.08, true)
@@ -324,8 +313,6 @@ static func _magnet(ci: CanvasItem, c: Vector2, s: float) -> void:
 		_stroke(ci, top + Vector2(0, -s * 0.28), top, s * 0.2, DANGER, s)
 		_stroke(ci, top + Vector2(0, -s * 0.38), top + Vector2(0, -s * 0.24), s * 0.2, Color.WHITE, s)
 
-
-# ---------- Objets ----------
 
 static func _bomb(ci: CanvasItem, c: Vector2, s: float) -> void:
 	_stroke(ci, c + Vector2(0.12, -0.24) * s, c + Vector2(0.28, -0.42) * s, s * 0.06, SAND, s)

@@ -1,7 +1,5 @@
 class_name WaveDirector
 extends Node
-## Gère l'apparition des ennemis : difficulté qui monte avec le temps,
-## hordes régulières et boss quand le score atteint un palier.
 
 signal enemy_killed(enemy: Node2D)
 signal horde_incoming
@@ -18,7 +16,6 @@ signal boss_defeated
 @export var boss_score_step := 1200
 @export var spawn_distance := 380.0
 
-## Temps de jeu (hors pauses), en secondes.
 var elapsed := 0.0
 
 var _arena: Arena
@@ -73,7 +70,6 @@ func on_score_changed(score: int) -> void:
 
 func on_level_up(level: int) -> void:
 	_player_level = level
-	# Palier de niveau : une horde arrive tout de suite.
 	if level % 5 == 0 and _boss == null and not _boss_pending:
 		_start_horde()
 
@@ -82,7 +78,6 @@ func stop() -> void:
 	_stopped = true
 
 
-## Pour les ennemis créés ailleurs (ex. les sbires du boss).
 func track_enemy(enemy: Node2D) -> void:
 	enemy.died.connect(_on_enemy_died)
 
@@ -105,7 +100,6 @@ func _spawn_slime(at: Vector2, horde: bool) -> void:
 	var slime := slime_scene.instantiate() as Slime
 	slime.target = _player
 	slime.position = at
-	# Plus la partie dure, plus les slimes sont résistants, rapides et dangereux.
 	var health: HealthComponent = slime.get_node("HealthComponent")
 	health.max_health = int(30.0 * (1.0 + elapsed / 90.0))
 	slime.hop_speed *= 1.0 + minf(elapsed / 200.0, 0.6)
@@ -180,7 +174,6 @@ func _random_spawn_point(min_distance: float) -> Vector2:
 		var at := Vector2(randf_range(area.position.x, area.end.x), randf_range(area.position.y, area.end.y))
 		if _arena.is_free(at, 40.0) and at.distance_to(_player.global_position) > min_distance:
 			return at
-	# Repli : le coin le plus éloigné de la sorcière.
 	var corners: Array[Vector2] = [area.position, Vector2(area.end.x, area.position.y),
 			Vector2(area.position.x, area.end.y), area.end]
 	var best := corners[0]

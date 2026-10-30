@@ -1,6 +1,5 @@
 class_name SpellCard
 extends Control
-## Carte de sort affichée à la montée de niveau.
 
 signal picked(card: SpellCard)
 
@@ -15,7 +14,6 @@ const NIGHT_PIP := Color("#46547A")
 const LIGHT := Color("#FFE6A1")
 const SHINE_SHADER := preload("res://scenes/ui/card_shine.gdshader")
 
-## {id, title, color, level, max_level, description}
 var offer: Dictionary
 
 var _index := 0
@@ -124,7 +122,6 @@ func _draw() -> void:
 	var body_color := NIGHT if is_augment else CREAM
 	var text_color := CREAM if is_augment else OUTLINE
 
-	# Cadre avec halo coloré qui pulse.
 	var frame := StyleBoxFlat.new()
 	frame.bg_color = body_color
 	frame.border_color = OUTLINE
@@ -135,7 +132,6 @@ func _draw() -> void:
 	frame.shadow_offset = Vector2(0, 4)
 	draw_style_box(frame, Rect2(Vector2.ZERO, size))
 	if is_augment:
-		# Liseré doré intérieur pour distinguer les augments.
 		var inner := StyleBoxFlat.new()
 		inner.draw_center = false
 		inner.border_color = Color(LIGHT, 0.7)
@@ -143,7 +139,6 @@ func _draw() -> void:
 		inner.set_corner_radius_all(RADIUS - 8)
 		draw_style_box(inner, Rect2(Vector2(10, 10), size - Vector2(20, 20)))
 
-	# En-tête coloré.
 	var header := StyleBoxFlat.new()
 	header.bg_color = color
 	header.corner_radius_top_left = RADIUS - 5
@@ -155,7 +150,6 @@ func _draw() -> void:
 	_draw_sparkles()
 	SpellIcons.draw(self, offer.id, icon_center, 88.0)
 
-	# Pastille "NOUVEAU" ou niveau.
 	var badge_text := "NOUVEAU !" if offer.level == 0 else "NIV. %d" % (offer.level + 1)
 	if offer.max_level == 0:
 		badge_text = "BONUS"
@@ -163,7 +157,6 @@ func _draw() -> void:
 	if offer.max_level > 0:
 		_draw_kind_tag(font, "AUGMENT" if is_augment else "SORT", is_augment)
 
-	# Bandeau avec le nom du sort.
 	var ribbon := PackedVector2Array([
 		Vector2(-12, 136), Vector2(w + 12, 136), Vector2(w + 2, 158),
 		Vector2(w + 12, 180), Vector2(-12, 180), Vector2(-2, 158),
@@ -179,7 +172,6 @@ func _draw() -> void:
 	draw_string(font, Vector2(0, 167), offer.title, HORIZONTAL_ALIGNMENT_CENTER, w,
 			title_size, Color.WHITE)
 
-	# Niveaux : losanges pleins, le prochain brille.
 	var max_level: int = offer.max_level
 	for k in max_level:
 		var at := Vector2(w / 2.0 + (k - (max_level - 1) / 2.0) * 24.0, 206)
@@ -197,7 +189,6 @@ func _draw() -> void:
 		pip.append(pip[0])
 		draw_polyline(pip, OUTLINE, 2.5, true)
 
-	# Description.
 	var text_top := 250.0 if max_level > 0 else 230.0
 	draw_multiline_string(font, Vector2(16, text_top), offer.description,
 			HORIZONTAL_ALIGNMENT_CENTER, w - 32, 19, 4, text_color)
@@ -238,7 +229,7 @@ func _draw_kind_tag(font: Font, text: String, is_augment: bool) -> void:
 
 
 func _draw_sparkles() -> void:
-	var spots: Array[Vector3] = [  # x, y, déphasage
+	var spots: Array[Vector3] = [
 		Vector3(34, 40, 0.0), Vector3(170, 32, 1.7), Vector3(160, 118, 3.1), Vector3(40, 112, 4.4),
 	]
 	for spot in spots:

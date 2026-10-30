@@ -1,6 +1,5 @@
 class_name ChainLightning
 extends Spell
-## Éclair qui frappe le monstre le plus proche puis rebondit sur d'autres.
 
 const COOLDOWN: Array[float] = [2.2, 2.1, 2.0, 1.6, 1.2]
 const BOUNCES: Array[int] = [1, 2, 2, 3, 3]
@@ -17,7 +16,6 @@ func _physics_process(delta: float) -> void:
 	_timer -= delta
 	if _timer > 0.0:
 		return
-	# Personne à portée : on réessaie vite.
 	_timer = _cooldown(COOLDOWN[_tier()]) if _strike() else 0.2
 
 

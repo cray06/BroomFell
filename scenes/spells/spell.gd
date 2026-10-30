@@ -1,7 +1,5 @@
 class_name Spell
 extends Node2D
-## Base des sorts de la sorcière. Les niveaux vont de 1 au nombre
-## de descriptions du sort dans le SpellBook.
 
 var level := 0
 var player: Player
@@ -12,12 +10,10 @@ func set_level(new_level: int) -> void:
 	_apply_level()
 
 
-## À surcharger si le sort doit réagir à un changement de niveau.
 func _apply_level() -> void:
 	pass
 
 
-## Index pour lire les tableaux de stats (niveau 1 = index 0).
 func _tier() -> int:
 	return level - 1
 
@@ -41,18 +37,15 @@ func _nearest_enemy(enemies: Array[Node2D], from: Vector2, max_distance: float) 
 	return best
 
 
-## Inflige des dégâts avec la puissance et les critiques de la sorcière.
 func _hit(enemy: Node2D, base_damage: int, direction: Vector2) -> void:
 	var roll := player.roll_damage(base_damage)
 	enemy.take_hit(roll.amount, direction, roll.crit)
 
 
-## Temps de recharge réduit par l'augment Concentration.
 func _cooldown(base: float) -> float:
 	return base * player.stats.cooldown_mult
 
 
-## Calque au sol (sous les personnages), pour les zones et flaques.
 func _ground() -> Node:
 	var ground := get_tree().get_first_node_in_group("ground_fx")
 	return ground if ground else _world()
@@ -63,11 +56,9 @@ func _arena_bounds() -> Rect2:
 	return arena.bounds if arena else Rect2(-5000, -5000, 10000, 10000)
 
 
-## Centre du corps d'un ennemi (chaque ennemi expose `center_offset`).
 static func center_of(enemy: Node2D) -> Vector2:
 	return enemy.global_position + enemy.center_offset
 
 
-## Les effets visuels vont dans le monde, pas sous la sorcière.
 func _world() -> Node:
 	return player.get_parent()
