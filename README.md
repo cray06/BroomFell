@@ -49,7 +49,10 @@ Cartoon fantasy coloré et cosy : formes arrondies, contours foncés, ombrage si
 
 Un workflow GitHub Actions ([.github/workflows/android.yml](.github/workflows/android.yml)) construit une APK à chaque push sur `main` (ou à la main depuis l'onglet **Actions** → **Build Android APK** → **Run workflow**).
 
-Pour la récupérer : onglet **Actions** → dernier run réussi → section **Artifacts** → `BroomFell-apk`.
+**Télécharger la dernière APK (marche depuis le téléphone) :**
+https://github.com/cray06/BroomFell/releases/download/latest/BroomFell.apk
+
+Elle est aussi visible dans la page [Releases](https://github.com/cray06/BroomFell/releases/tag/latest), et en `.zip` dans les **Artifacts** de chaque run de l'onglet **Actions**.
 
 L'APK est une version *debug*, signée avec une clé générée à chaque build. Elle s'installe directement sur un téléphone (autoriser les sources inconnues), mais il faut désinstaller l'ancienne version avant d'installer une nouvelle. Pour une publication sur le Play Store, il faudra une clé de release.
 
