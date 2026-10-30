@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scenes/enemies/boss/king_slime.gd" id="1_boss"]
+[ext_resource type="Texture2D" path="res://assets/sprites/monsters/king_slime.svg" id="2_tex"]
+[ext_resource type="Shader" path="res://scenes/effects/hit_flash.gdshader" id="3_flash"]
+[ext_resource type="Script" path="res://scenes/components/health_component.gd" id="4_health"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_flash"]
+resource_local_to_scene = true
+shader = ExtResource("3_flash")
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 62.0
+
+[node name="KingSlime" type="CharacterBody2D" groups=["boss", "enemies"]]
+collision_layer = 4
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("1_boss")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -55)
+shape = SubResource("CircleShape2D_body")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visual"]
+material = SubResource("ShaderMaterial_flash")
+position = Vector2(0, -76)
+scale = Vector2(0.85, 0.85)
+texture = ExtResource("2_tex")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("4_health")
+max_health = 1000

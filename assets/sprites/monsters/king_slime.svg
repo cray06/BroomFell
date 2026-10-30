@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Ombre au sol -->
+  <ellipse cx="128" cy="220" rx="100" ry="16" fill="#253047" fill-opacity="0.25"/>
+
+  <g stroke="#253047" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Corps -->
+    <path d="M28 206 Q18 128 70 92 Q128 52 186 92 Q238 128 228 206 Q128 230 28 206 Z" fill="#A45CDA"/>
+    <path d="M196 102 Q232 140 222 202 Q196 212 164 216 Q214 176 196 102 Z" fill="#7E3FB0" stroke="none"/>
+    <path d="M28 206 Q18 128 70 92 Q128 52 186 92 Q238 128 228 206 Q128 230 28 206 Z" fill="none"/>
+
+    <!-- Gouttes qui coulent -->
+    <path d="M44 150 Q40 172 48 178 Q56 172 52 150" fill="#A45CDA" stroke-width="4"/>
+    <path d="M214 160 Q212 180 219 184 Q226 178 222 158" fill="#7E3FB0" stroke-width="4"/>
+
+    <!-- Reflets -->
+    <ellipse cx="78" cy="122" rx="17" ry="9" fill="#E3C4F5" stroke="none" transform="rotate(-38 78 122)"/>
+    <circle cx="62" cy="146" r="5" fill="#E3C4F5" stroke="none"/>
+
+    <!-- Couronne -->
+    <path d="M84 80 L78 36 L104 56 L128 26 L152 56 L178 36 L172 80 Z" fill="#FFE6A1"/>
+    <path d="M152 56 L178 36 L172 80 L150 80 Z" fill="#F2C46B" stroke="none"/>
+    <path d="M84 80 L78 36 L104 56 L128 26 L152 56 L178 36 L172 80 Z" fill="none"/>
+    <path d="M84 80 L172 80 L170 66 L86 66 Z" fill="#FF9138"/>
+    <circle cx="78" cy="34" r="6" fill="#FFE6A1" stroke-width="4"/>
+    <circle cx="128" cy="24" r="6" fill="#FFE6A1" stroke-width="4"/>
+    <circle cx="178" cy="34" r="6" fill="#FFE6A1" stroke-width="4"/>
+    <circle cx="128" cy="52" r="8" fill="#F05B52" stroke-width="4"/>
+    <circle cx="125" cy="49" r="2.5" fill="#FFFFFF" stroke="none"/>
+
+    <!-- Yeux -->
+    <ellipse cx="96" cy="140" rx="19" ry="21" fill="#FFFFFF" stroke-width="5"/>
+    <ellipse cx="160" cy="140" rx="19" ry="21" fill="#FFFFFF" stroke-width="5"/>
+    <circle cx="101" cy="145" r="9" fill="#253047" stroke="none"/>
+    <circle cx="155" cy="145" r="9" fill="#253047" stroke="none"/>
+    <circle cx="104" cy="141" r="3" fill="#FFFFFF" stroke="none"/>
+    <circle cx="158" cy="141" r="3" fill="#FFFFFF" stroke="none"/>
+
+    <!-- Sourcils furieux -->
+    <path d="M70 112 L118 128" fill="none" stroke-width="9"/>
+    <path d="M186 112 L138 128" fill="none" stroke-width="9"/>
+
+    <!-- Bouche + crocs -->
+    <path d="M86 174 Q128 210 170 174 Q128 188 86 174 Z" fill="#253047"/>
+    <ellipse cx="128" cy="192" rx="14" ry="5" fill="#F05B52" stroke="none"/>
+    <path d="M98 178 L104 190 L110 180 Z" fill="#FFFFFF" stroke-width="3"/>
+    <path d="M158 178 L152 190 L146 180 Z" fill="#FFFFFF" stroke-width="3"/>
+  </g>
+</svg>

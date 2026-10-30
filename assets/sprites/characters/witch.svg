@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- Ombre au sol -->
+  <ellipse cx="64" cy="114" rx="30" ry="7" fill="#253047" fill-opacity="0.25"/>
+
+  <g stroke="#253047" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Balai (derrière le corps) -->
+    <g transform="rotate(-35 64 70)">
+      <rect x="60.5" y="40" width="7" height="56" rx="3.5" fill="#E6C58D"/>
+      <path d="M52 94 L76 94 L84 120 Q64 126 44 120 Z" fill="#FFE6A1"/>
+      <path d="M68 96 L76 96 L82 119 Q76 121 70 122 Z" fill="#E6C58D" stroke="none"/>
+      <path d="M52 94 L76 94 L84 120 Q64 126 44 120 Z" fill="none"/>
+      <rect x="53" y="90" width="22" height="7" rx="3" fill="#39C9F0"/>
+    </g>
+
+    <!-- Pieds -->
+    <ellipse cx="56" cy="107" rx="6" ry="4" fill="#253047"/>
+    <ellipse cx="72" cy="107" rx="6" ry="4" fill="#253047"/>
+
+    <!-- Robe -->
+    <path d="M46 105 Q44 84 54 72 L74 72 Q84 84 82 105 Q64 111 46 105 Z" fill="#A45CDA"/>
+    <path d="M71 75 Q80 86 80 103 Q75 106 69 107 Q74 91 71 75 Z" fill="#7E3FB0" stroke="none"/>
+    <path d="M46 105 Q44 84 54 72 L74 72 Q84 84 82 105 Q64 111 46 105 Z" fill="none"/>
+    <path d="M50 91 Q64 96 78 91" fill="none" stroke="#FFE6A1" stroke-width="3"/>
+
+    <!-- Mains -->
+    <circle cx="46" cy="90" r="5.5" fill="#FFE0BF"/>
+    <circle cx="82" cy="90" r="5.5" fill="#FFE0BF"/>
+
+    <!-- Tête -->
+    <circle cx="64" cy="52" r="25" fill="#FFE0BF"/>
+
+    <!-- Cheveux -->
+    <path d="M38 56 Q34 32 64 28 Q94 32 90 56 Q86 46 78 46 Q72 40 64 44 Q56 40 50 46 Q42 46 38 56 Z" fill="#FF9138"/>
+
+    <!-- Chapeau : cône, bandeau, bord -->
+    <path d="M46 31 Q52 14 62 6 Q74 -1 86 4 Q76 8 77 15 Q80 23 82 31 Z" fill="#A45CDA"/>
+    <path d="M75 12 Q79 22 81 30 L74 31 Q75 21 75 12 Z" fill="#7E3FB0" stroke="none"/>
+    <path d="M46 31 Q52 14 62 6 Q74 -1 86 4 Q76 8 77 15 Q80 23 82 31 Z" fill="none"/>
+    <path d="M47 26 Q64 31 81 26 L82 31 Q64 36 46 31 Z" fill="#39C9F0"/>
+    <ellipse cx="64" cy="33" rx="34" ry="8" fill="#A45CDA"/>
+    <path d="M62 15 L63.6 18.6 L67.5 19 L64.6 21.6 L65.4 25.4 L62 23.4 L58.6 25.4 L59.4 21.6 L56.5 19 L60.4 18.6 Z" fill="#FFE6A1" stroke-width="2"/>
+
+    <!-- Visage -->
+    <ellipse cx="55" cy="58" rx="4" ry="5.5" fill="#253047" stroke="none"/>
+    <ellipse cx="73" cy="58" rx="4" ry="5.5" fill="#253047" stroke="none"/>
+    <circle cx="56.5" cy="56" r="1.7" fill="#FFFFFF" stroke="none"/>
+    <circle cx="74.5" cy="56" r="1.7" fill="#FFFFFF" stroke="none"/>
+    <ellipse cx="47" cy="66" rx="4" ry="2.5" fill="#F05B52" fill-opacity="0.35" stroke="none"/>
+    <ellipse cx="81" cy="66" rx="4" ry="2.5" fill="#F05B52" fill-opacity="0.35" stroke="none"/>
+    <path d="M60 67 Q64 71 68 67" fill="none" stroke-width="2.5"/>
+  </g>
+</svg>

@@ -1,0 +1,51 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scenes/main/main.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/slime/slime.tscn" id="2_slime"]
+[ext_resource type="Script" path="res://scenes/arena/arena.gd" id="3_arena"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="4_player"]
+[ext_resource type="Script" path="res://scenes/main/shake_camera.gd" id="5_camera"]
+[ext_resource type="Script" path="res://scenes/ui/touch_joystick.gd" id="6_joystick"]
+[ext_resource type="Script" path="res://scenes/ui/hud.gd" id="7_hud"]
+[ext_resource type="Script" path="res://scenes/main/wave_director.gd" id="8_director"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/boss/king_slime.tscn" id="9_boss"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+
+[node name="Arena" type="Node2D" parent="."]
+script = ExtResource("3_arena")
+
+[node name="GroundFx" type="Node2D" parent="."]
+
+[node name="Entities" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="Entities" instance=ExtResource("4_player")]
+position = Vector2(600, 900)
+
+[node name="Camera2D" type="Camera2D" parent="Entities/Player"]
+position = Vector2(0, -30)
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+script = ExtResource("5_camera")
+
+[node name="WaveDirector" type="Node" parent="."]
+script = ExtResource("8_director")
+slime_scene = ExtResource("2_slime")
+boss_scene = ExtResource("9_boss")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+process_mode = 3
+script = ExtResource("7_hud")
+
+[node name="Joystick" type="Control" parent="HUD"]
+process_mode = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_joystick")

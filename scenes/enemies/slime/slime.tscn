@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scenes/enemies/slime/slime.gd" id="1_slime"]
+[ext_resource type="Texture2D" uid="uid://d15tj4hcpu354" path="res://assets/sprites/monsters/slime.svg" id="2_tex"]
+[ext_resource type="Shader" path="res://scenes/effects/hit_flash.gdshader" id="3_flash"]
+[ext_resource type="Script" path="res://scenes/components/health_component.gd" id="4_health"]
+[ext_resource type="Script" path="res://scenes/ui/health_bar.gd" id="5_bar"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_flash"]
+resource_local_to_scene = true
+shader = ExtResource("3_flash")
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 24.0
+
+[node name="Slime" type="CharacterBody2D" groups=["enemies"]]
+collision_layer = 4
+collision_mask = 7
+motion_mode = 1
+script = ExtResource("1_slime")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -20)
+shape = SubResource("CircleShape2D_body")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visual"]
+material = SubResource("ShaderMaterial_flash")
+position = Vector2(0, -28)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_tex")
+
+[node name="HealthBar" type="Node2D" parent="."]
+position = Vector2(0, -74)
+script = ExtResource("5_bar")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("4_health")

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- Ombre au sol -->
+  <ellipse cx="64" cy="110" rx="38" ry="8" fill="#253047" fill-opacity="0.25"/>
+
+  <g stroke="#253047" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Pousse sur la tête -->
+    <path d="M64 40 Q62 30 67 22" fill="none"/>
+    <path d="M67 23 Q78 12 88 19 Q78 29 67 23 Z" fill="#387E55"/>
+
+    <!-- Corps -->
+    <path d="M22 102 Q16 70 40 50 Q64 30 88 50 Q112 70 106 102 Q64 112 22 102 Z" fill="#70C95B"/>
+    <path d="M94 56 Q110 76 104 100 Q88 106 70 107 Q96 94 94 56 Z" fill="#4E9E57" stroke="none"/>
+    <path d="M22 102 Q16 70 40 50 Q64 30 88 50 Q112 70 106 102 Q64 112 22 102 Z" fill="none"/>
+
+    <!-- Reflets -->
+    <ellipse cx="42" cy="62" rx="8" ry="4.5" fill="#FFE6A1" fill-opacity="0.85" stroke="none" transform="rotate(-40 42 62)"/>
+    <circle cx="33" cy="74" r="2.5" fill="#FFE6A1" fill-opacity="0.85" stroke="none"/>
+
+    <!-- Yeux -->
+    <ellipse cx="50" cy="74" rx="9" ry="10" fill="#FFFFFF" stroke-width="3"/>
+    <ellipse cx="78" cy="74" rx="9" ry="10" fill="#FFFFFF" stroke-width="3"/>
+    <circle cx="53" cy="76" r="5" fill="#253047" stroke="none"/>
+    <circle cx="75" cy="76" r="5" fill="#253047" stroke="none"/>
+    <circle cx="54.5" cy="74" r="1.6" fill="#FFFFFF" stroke="none"/>
+    <circle cx="76.5" cy="74" r="1.6" fill="#FFFFFF" stroke="none"/>
+
+    <!-- Sourcils fâchés -->
+    <path d="M40 61 L57 66" fill="none" stroke-width="4.5"/>
+    <path d="M88 61 L71 66" fill="none" stroke-width="4.5"/>
+
+    <!-- Bouche + crocs -->
+    <path d="M54 89 Q64 99 74 89 Q64 92 54 89 Z" fill="#253047"/>
+    <path d="M58 90 L60.5 94.5 L63 91 Z" fill="#FFFFFF" stroke-width="1.5"/>
+    <path d="M70 90 L67.5 94.5 L65 91 Z" fill="#FFFFFF" stroke-width="1.5"/>
+  </g>
+</svg>

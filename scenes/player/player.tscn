@@ -1,0 +1,62 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_player"]
+[ext_resource type="Texture2D" uid="uid://bb65gf0vtmg3t" path="res://assets/sprites/characters/witch.svg" id="2_witch"]
+[ext_resource type="PackedScene" path="res://scenes/projectiles/magic_bolt.tscn" id="3_bolt"]
+[ext_resource type="Shader" path="res://scenes/effects/hit_flash.gdshader" id="4_flash"]
+[ext_resource type="Script" path="res://scenes/components/health_component.gd" id="5_health"]
+[ext_resource type="Script" path="res://scenes/ui/health_bar.gd" id="6_bar"]
+[ext_resource type="Script" path="res://scenes/spells/spell_book.gd" id="7_book"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 18.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_flash"]
+resource_local_to_scene = true
+shader = ExtResource("4_flash")
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/flash_amount = 0.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
+radius = 24.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 5
+motion_mode = 1
+script = ExtResource("1_player")
+bolt_scene = ExtResource("3_bolt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -12)
+shape = SubResource("CircleShape2D_body")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visual"]
+material = SubResource("ShaderMaterial_flash")
+position = Vector2(0, -37)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_witch")
+
+[node name="SpellBook" type="Node2D" parent="."]
+script = ExtResource("7_book")
+
+[node name="HealthBar" type="Node2D" parent="."]
+position = Vector2(0, -96)
+script = ExtResource("6_bar")
+bar_size = Vector2(70, 11)
+fill_color = Color(0.439216, 0.788235, 0.356863, 1)
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("5_health")
+max_health = 100
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -14)
+shape = SubResource("CircleShape2D_hurtbox")
