@@ -5,6 +5,7 @@ const HORDE_COLOR := Color("#FF9138")
 const BOSS_COLOR := Color("#F05B52")
 const VICTORY_COLOR := Color("#FFE6A1")
 const ICE := Color("#9FE8FF")
+const OVERTIME_COLOR := Color("#F05B52")
 
 const DROP_CHANCE := 0.05
 const DROP_WEIGHTS := {
@@ -28,10 +29,12 @@ var _xp := 0
 var _free_levels := 0
 var _leveling := false
 var _game_over := false
+var _stage := SaveData.selected_stage()
 
 @onready var arena: Arena = $Arena
 @onready var ground_fx: Node2D = $GroundFx
 @onready var entities: Node2D = $Entities
+@onready var xp_field: XpField = $XpField
 @onready var player: Player = $Entities/Player
 @onready var camera: ShakeCamera = $Entities/Player/Camera2D
 @onready var director: WaveDirector = $WaveDirector
@@ -43,11 +46,16 @@ func _ready() -> void:
 	arena.generate(entities)
 	player.global_position = arena.bounds.get_center()
 	player.joystick = hud.joystick
+	xp_field.target = player
+	xp_field.collected.connect(_on_xp_collected)
 	player.hurt.connect(_on_player_hurt)
 	player.died.connect(_on_player_died)
 	player.spell_book.changed.connect(_refresh_loadout)
 	hud.game_over.restart_requested.connect(_restart)
 	hud.game_over.menu_requested.connect(_go_to_menu)
+	hud.pause_button.pressed.connect(_pause)
+	hud.pause_menu.resume_requested.connect(_resume)
+	hud.pause_menu.menu_requested.connect(_go_to_menu)
 
 	var limits := arena.bounds.grow(arena.wall_thickness)
 	camera.limit_left = int(limits.position.x)
@@ -61,27 +69,64 @@ func _ready() -> void:
 	director.boss_incoming.connect(_on_boss_incoming)
 	director.boss_spawned.connect(_on_boss_spawned)
 	director.boss_defeated.connect(_on_boss_defeated)
+	director.overtime_started.connect(_on_overtime_started)
+	director.difficulty = WorldMap.difficulty(_stage)
 	director.setup(arena, entities, ground_fx, player)
 
 	hud.set_score(_score)
 	hud.xp_bar.set_level(_level)
 	_refresh_xp()
 	_refresh_loadout()
+	hud.banner.show_banner.call_deferred("NIVEAU %s" % WorldMap.stage_label(_stage), VICTORY_COLOR)
+
+
+func _process(_delta: float) -> void:
+	hud.set_clock(director.clock(), director.phase)
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_APPLICATION_PAUSED:
+			_pause()
+		NOTIFICATION_WM_GO_BACK_REQUEST:
+			if hud.pause_menu.visible:
+				_resume()
+			else:
+				_pause()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		get_viewport().set_input_as_handled()
+		_pause()
+
+
+func _can_pause() -> bool:
+	return not _leveling and not _game_over and not get_tree().paused
+
+
+func _pause() -> void:
+	if not is_node_ready() or not _can_pause():
+		return
+	get_tree().paused = true
+	hud.pause_menu.open()
+
+
+func _resume() -> void:
+	if not is_node_ready() or not hud.pause_menu.visible:
+		return
+	hud.pause_menu.close()
+	get_tree().paused = false
 
 
 func _required_xp() -> int:
-	return 5 + (_level - 1) * 4
+	return 5 + (_level - 1) * 3
 
 
 func _drop_xp(at: Vector2, count: int) -> void:
 	var max_speed := 260.0 if count <= 5 else 520.0
 	for k in count:
-		var orb := XpOrb.new()
-		orb.target = player
-		orb.position = at
-		orb.launch(Vector2.from_angle(randf() * TAU) * randf_range(140.0, max_speed))
-		orb.collected.connect(_on_xp_collected)
-		entities.add_child.call_deferred(orb)
+		xp_field.spawn(at, 1, Vector2.from_angle(randf() * TAU) * randf_range(140.0, max_speed))
 
 
 func _drop_item(kind: String, at: Vector2) -> void:
@@ -150,7 +195,6 @@ func _on_enemy_killed(enemy: Node2D) -> void:
 		camera.shake(10.0)
 		if randf() < DROP_CHANCE:
 			_drop_item.call_deferred(_random_drop(), at)
-	director.on_score_changed(_score)
 
 
 func _on_xp_collected(value: int) -> void:
@@ -169,8 +213,7 @@ func _on_pickup_collected(kind: String) -> void:
 		"heart":
 			player.heal(HEART_HEAL)
 		"magnet":
-			for orb in get_tree().get_nodes_in_group("xp_orbs"):
-				orb.attract()
+			xp_field.attract_all()
 			Fx.popup_text(entities, text_at, "Aimant !", Pickup.COLORS.magnet)
 		"bomb":
 			_explode_bomb()
@@ -220,8 +263,15 @@ func _on_boss_spawned(boss: KingSlime) -> void:
 
 
 func _on_boss_defeated() -> void:
+	SaveData.clear_stage(_stage)
 	hud.banner.show_banner("VICTOIRE !", VICTORY_COLOR)
 	hud.boss_bar.close()
+
+
+func _on_overtime_started() -> void:
+	hud.flash(OVERTIME_COLOR, 0.6)
+	hud.banner.show_banner("SURVIS LE PLUS LONGTEMPS !", OVERTIME_COLOR)
+	camera.shake(12.0)
 
 
 func _on_player_hurt() -> void:
@@ -236,6 +286,7 @@ func _on_player_died() -> void:
 	var record := SaveData.submit_score(_score)
 	await get_tree().create_timer(1.2).timeout
 	get_tree().paused = true
+	hud.pause_menu.close()
 	hud.game_over.open(_score, _level, record, previous_best)
 
 

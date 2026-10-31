@@ -3,7 +3,7 @@ extends Control
 
 signal picked(card: SpellCard)
 
-const CARD_SIZE := Vector2(204, 340)
+const CARD_SIZE := Vector2(196, 340)
 const HEADER_HEIGHT := 150.0
 const RADIUS := 22
 const OUTLINE := Color("#253047")
@@ -12,6 +12,9 @@ const PIP_EMPTY := Color("#E9DCC0")
 const NIGHT := Color("#2E3A55")
 const NIGHT_PIP := Color("#46547A")
 const LIGHT := Color("#FFE6A1")
+const RIBBON_OVERHANG := 6.0
+const TITLE_MAX_SIZE := 24
+const TITLE_MIN_SIZE := 15
 const SHINE_SHADER := preload("res://scenes/ui/card_shine.gdshader")
 
 var offer: Dictionary
@@ -102,6 +105,13 @@ func animate_discard() -> void:
 	tween.tween_property(self, "modulate:a", 0.0, 0.4)
 
 
+func _fit_font_size(font: Font, text: String, max_width: float) -> int:
+	var font_size := TITLE_MAX_SIZE
+	while font_size > TITLE_MIN_SIZE and font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > max_width:
+		font_size -= 1
+	return font_size
+
+
 func _on_hover(entered: bool) -> void:
 	_hovered = entered and _interactive
 	if _hover_tween:
@@ -157,16 +167,17 @@ func _draw() -> void:
 	if offer.max_level > 0:
 		_draw_kind_tag(font, "AUGMENT" if is_augment else "SORT", is_augment)
 
+	var o := RIBBON_OVERHANG
 	var ribbon := PackedVector2Array([
-		Vector2(-12, 136), Vector2(w + 12, 136), Vector2(w + 2, 158),
-		Vector2(w + 12, 180), Vector2(-12, 180), Vector2(-2, 158),
+		Vector2(-o, 136), Vector2(w + o, 136), Vector2(w - 4, 158),
+		Vector2(w + o, 180), Vector2(-o, 180), Vector2(4, 158),
 	])
 	draw_colored_polygon(ribbon, color.darkened(0.25))
-	draw_colored_polygon(PackedVector2Array([Vector2(-12, 136), Vector2(w + 12, 136),
-			Vector2(w + 8, 145), Vector2(-8, 145)]), Color(1, 1, 1, 0.18))
+	draw_colored_polygon(PackedVector2Array([Vector2(-o, 136), Vector2(w + o, 136),
+			Vector2(w + o - 4, 145), Vector2(4 - o, 145)]), Color(1, 1, 1, 0.18))
 	ribbon.append(ribbon[0])
 	draw_polyline(ribbon, OUTLINE, 4.0, true)
-	var title_size := 24 if offer.title.length() <= 14 else 21
+	var title_size := _fit_font_size(font, offer.title, w - 24.0)
 	draw_string_outline(font, Vector2(0, 167), offer.title, HORIZONTAL_ALIGNMENT_CENTER, w,
 			title_size, 9, OUTLINE)
 	draw_string(font, Vector2(0, 167), offer.title, HORIZONTAL_ALIGNMENT_CENTER, w,

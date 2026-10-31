@@ -79,16 +79,7 @@ func _on_body_entered(body: Node2D) -> void:
 
 
 func _ricochet_target() -> Node2D:
-	var best: Node2D = null
-	var best_distance := RICOCHET_RANGE
-	for enemy in get_tree().get_nodes_in_group("enemies"):
-		if enemy.is_dead or _hit_ids.has(enemy.get_instance_id()):
-			continue
-		var distance := global_position.distance_to(Spell.center_of(enemy))
-		if distance < best_distance:
-			best = enemy
-			best_distance = distance
-	return best
+	return Targeting.nearest_enemy(get_tree(), global_position, RICOCHET_RANGE, _hit_ids)
 
 
 func _finish() -> void:
@@ -118,10 +109,7 @@ func _add_trail() -> void:
 	trail.initial_velocity_max = 50.0
 	trail.scale_amount_min = 0.25 * size_scale
 	trail.scale_amount_max = 0.4 * size_scale
-	var shrink := Curve.new()
-	shrink.add_point(Vector2(0.0, 1.0))
-	shrink.add_point(Vector2(1.0, 0.0))
-	trail.scale_amount_curve = shrink
+	trail.scale_amount_curve = Fx.shrink_curve()
 	trail.color = color
 	trail.show_behind_parent = true
 	add_child(trail)

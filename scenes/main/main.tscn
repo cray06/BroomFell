@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scenes/main/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/slime/slime.tscn" id="2_slime"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scenes/ui/hud.gd" id="7_hud"]
 [ext_resource type="Script" path="res://scenes/main/wave_director.gd" id="8_director"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/boss/king_slime.tscn" id="9_boss"]
+[ext_resource type="Script" path="res://scenes/pickups/xp_field.gd" id="10_xp_field"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
@@ -17,6 +18,9 @@ script = ExtResource("1_main")
 script = ExtResource("3_arena")
 
 [node name="GroundFx" type="Node2D" parent="."]
+
+[node name="XpField" type="Node2D" parent="."]
+script = ExtResource("10_xp_field")
 
 [node name="Entities" type="Node2D" parent="."]
 y_sort_enabled = true

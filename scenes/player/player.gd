@@ -9,6 +9,9 @@ const CAST_HEIGHT := 46.0
 const CAST_DISTANCE := 34.0
 const BOLT_DAMAGE := 10
 const SPREAD_ANGLE := 0.2
+const TARGET_RANGE := 620.0
+const SCREEN_MARGIN := 24.0
+const RETARGET_INTERVAL := 0.15
 const ARROW_COLOR := Color("#FFE6A1")
 const OUTLINE := Color("#253047")
 const MAGIC := Color("#39C9F0")
@@ -26,6 +29,7 @@ const DEATH_SPARK := Color("#A45CDA")
 
 var joystick: TouchJoystick
 var facing := Vector2.UP
+var aim := Vector2.UP
 var is_dead := false
 var stats := PlayerStats.new()
 
@@ -40,6 +44,8 @@ var _shield_cooldown := 0.0
 var _regen_progress := 0.0
 var _shoot_tween: Tween
 var _bubble: ShieldBubble
+var _target: Node2D
+var _retarget_cooldown := 0.0
 
 @onready var visual: Node2D = $Visual
 @onready var body_sprite: Sprite2D = $Visual/Sprite2D
@@ -70,6 +76,7 @@ func _physics_process(delta: float) -> void:
 	var speed := move_speed * stats.move_speed_mult
 	velocity = velocity.move_toward(input * speed, acceleration * delta)
 	move_and_slide()
+	_update_aim(delta)
 	_animate(delta)
 	_update_invulnerability(delta)
 	_update_buffs(delta)
@@ -172,6 +179,22 @@ func _read_input() -> Vector2:
 	return Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 
+func _update_aim(delta: float) -> void:
+	_retarget_cooldown -= delta
+	var area := Targeting.visible_area(get_viewport(), SCREEN_MARGIN)
+	if _retarget_cooldown <= 0.0 or not Targeting.is_targetable(_target, area):
+		_retarget_cooldown = RETARGET_INTERVAL
+		_target = Targeting.nearest_enemy(get_tree(), _cast_origin(), TARGET_RANGE, {}, area)
+	if Targeting.is_targetable(_target, area):
+		aim = _cast_origin().direction_to(Spell.center_of(_target))
+	else:
+		aim = facing
+
+
+func _cast_origin() -> Vector2:
+	return global_position + Vector2(0, -CAST_HEIGHT)
+
+
 func _check_contact_damage() -> void:
 	if _invulnerable > 0.0:
 		return
@@ -217,11 +240,11 @@ func _update_buffs(delta: float) -> void:
 
 
 func _animate(delta: float) -> void:
-	_aim_angle = lerp_angle(_aim_angle, facing.angle(), minf(1.0, 18.0 * delta))
+	_aim_angle = lerp_angle(_aim_angle, aim.angle(), minf(1.0, 18.0 * delta))
 	queue_redraw()
 
-	if absf(facing.x) > 0.1:
-		body_sprite.flip_h = facing.x < 0.0
+	if absf(aim.x) > 0.1:
+		body_sprite.flip_h = aim.x < 0.0
 
 	_anim_time += delta
 	if velocity.length() > 20.0:
@@ -240,12 +263,12 @@ func _shoot() -> void:
 	var directions: Array[Vector2] = []
 	var front := stats.projectile_count
 	for i in front:
-		directions.append(facing.rotated((i - (front - 1) / 2.0) * SPREAD_ANGLE))
+		directions.append(aim.rotated((i - (front - 1) / 2.0) * SPREAD_ANGLE))
 	var back := stats.back_shots
 	for i in back:
-		directions.append((-facing).rotated((i - (back - 1) / 2.0) * SPREAD_ANGLE * 1.5))
+		directions.append((-aim).rotated((i - (back - 1) / 2.0) * SPREAD_ANGLE * 1.5))
 
-	var origin := global_position + Vector2(0, -CAST_HEIGHT)
+	var origin := _cast_origin()
 	for dir in directions:
 		var bolt := bolt_scene.instantiate() as MagicBolt
 		bolt.direction = dir
@@ -257,7 +280,7 @@ func _shoot() -> void:
 			bolt.color = RAGE
 		get_parent().add_child(bolt)
 		bolt.global_position = origin + dir * CAST_DISTANCE
-	Fx.burst(get_parent(), origin + facing * CAST_DISTANCE, MAGIC, 6, 120.0, 0.3)
+	Fx.burst(get_parent(), origin + aim * CAST_DISTANCE, MAGIC, 6, 120.0, 0.3)
 	_play_shoot_animation()
 
 
@@ -265,7 +288,7 @@ func _play_shoot_animation() -> void:
 	if _shoot_tween:
 		_shoot_tween.kill()
 	visual.scale = Vector2(1.12, 0.88)
-	visual.position = -facing * 5.0
+	visual.position = -aim * 5.0
 	_shoot_tween = create_tween().set_parallel()
 	_shoot_tween.tween_property(visual, "scale", Vector2.ONE, 0.18) \
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)

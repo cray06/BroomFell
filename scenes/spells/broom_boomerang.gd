@@ -16,5 +16,5 @@ func _physics_process(delta: float) -> void:
 	_timer = _cooldown(COOLDOWN[_tier()])
 	var count := COUNT[_tier()]
 	for k in count:
-		var dir := player.facing.rotated((k - (count - 1) / 2.0) * SPREAD)
+		var dir := player.aim.rotated((k - (count - 1) / 2.0) * SPREAD)
 		FlyingBroom.spawn(_world(), self, dir, DAMAGE[_tier()])

@@ -103,15 +103,19 @@ func _build() -> void:
 	replay.text = "Rejouer"
 	replay.custom_minimum_size = Vector2(0, 84)
 	UiStyle.style_button(replay, GREEN, 38)
-	replay.pressed.connect(restart_requested.emit)
+	replay.pressed.connect(_on_button.bind(restart_requested))
 	column.add_child(replay)
 
 	var menu := Button.new()
 	menu.text = "Menu"
 	menu.custom_minimum_size = Vector2(0, 66)
 	UiStyle.style_button(menu, STONE, 30)
-	menu.pressed.connect(menu_requested.emit)
+	menu.pressed.connect(_on_button.bind(menu_requested))
 	column.add_child(menu)
+
+
+func _on_button(action: Signal) -> void:
+	action.emit()
 
 
 func _label(text: String, font_size: int, color: Color, outline: int) -> Label:

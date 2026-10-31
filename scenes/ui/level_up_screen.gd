@@ -5,7 +5,7 @@ signal chosen(id: String)
 
 const OUTLINE := Color("#253047")
 const GOLD := Color("#FFE6A1")
-const CARD_GAP := 16.0
+const CARD_GAP := 30.0
 const RAY_COUNT := 18
 
 var _cards: Array[SpellCard] = []

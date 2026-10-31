@@ -6,17 +6,32 @@ signal horde_incoming
 signal boss_incoming
 signal boss_spawned(boss: KingSlime)
 signal boss_defeated
+signal overtime_started
+
+enum Phase { WAVES, BOSS, OVERTIME }
 
 @export var slime_scene: PackedScene
 @export var boss_scene: PackedScene
+@export var stage_duration := 900.0
 @export var base_slimes := 6
-@export var max_slimes := 28
-@export var horde_interval := 35.0
-@export var first_boss_score := 400
-@export var boss_score_step := 1200
+@export var max_wave_slimes := 45
+@export var max_overtime_slimes := 140
+@export var hard_cap_slimes := 180
+@export var horde_interval_start := 35.0
+@export var horde_interval_end := 22.0
 @export var spawn_distance := 380.0
 
-var elapsed := 0.0
+const BOSS_PHASE_SLIMES := 4
+const VICTORY_DELAY := 1.4
+const OVERTIME_DELAY := 2.5
+const OVERTIME_HEALTH_BASE := 1.6
+const OVERTIME_HEALTH_PERIOD := 30.0
+const OVERTIME_DAMAGE_PERIOD := 45.0
+
+var phase := Phase.WAVES
+var difficulty := 1.0
+var time_left := 0.0
+var overtime := 0.0
 
 var _arena: Arena
 var _entities: Node2D
@@ -24,12 +39,7 @@ var _ground: Node2D
 var _player: Player
 var _spawn_timer := 0.0
 var _horde_timer := 0.0
-var _next_boss_score := 0
-var _last_score := 0
 var _player_level := 1
-var _boss: KingSlime
-var _boss_pending := false
-var _boss_count := 0
 var _stopped := false
 
 
@@ -38,8 +48,8 @@ func setup(arena: Arena, entities: Node2D, ground: Node2D, player: Player) -> vo
 	_entities = entities
 	_ground = ground
 	_player = player
-	_horde_timer = horde_interval
-	_next_boss_score = first_boss_score
+	time_left = stage_duration
+	_horde_timer = horde_interval_start
 	add_to_group("wave_director")
 	for i in base_slimes:
 		_spawn_slime(_random_spawn_point(spawn_distance), false)
@@ -48,29 +58,28 @@ func setup(arena: Arena, entities: Node2D, ground: Node2D, player: Player) -> vo
 func _physics_process(delta: float) -> void:
 	if _stopped or _arena == null:
 		return
-	elapsed += delta
+	_advance_clock(delta)
 
 	_spawn_timer -= delta
 	if _spawn_timer <= 0.0:
-		_spawn_timer = 0.5
-		if _alive_slimes() < _target_count():
+		_spawn_timer = _spawn_interval()
+		var missing := _target_count() - _alive_slimes()
+		for k in mini(missing, _spawn_batch()):
 			_spawn_slime(_random_spawn_point(spawn_distance), false)
 
-	if _boss == null and not _boss_pending:
+	if phase != Phase.BOSS:
 		_horde_timer -= delta
 		if _horde_timer <= 0.0:
 			_start_horde()
 
 
-func on_score_changed(score: int) -> void:
-	_last_score = score
-	if _boss == null and not _boss_pending and not _stopped and score >= _next_boss_score:
-		_start_boss()
+func clock() -> float:
+	return -overtime if phase == Phase.OVERTIME else time_left
 
 
 func on_level_up(level: int) -> void:
 	_player_level = level
-	if level % 5 == 0 and _boss == null and not _boss_pending:
+	if level % 5 == 0 and phase == Phase.WAVES:
 		_start_horde()
 
 
@@ -82,10 +91,76 @@ func track_enemy(enemy: Node2D) -> void:
 	enemy.died.connect(_on_enemy_died)
 
 
+func _advance_clock(delta: float) -> void:
+	match phase:
+		Phase.WAVES:
+			time_left -= delta
+			if time_left <= 0.0:
+				time_left = 0.0
+				phase = Phase.BOSS
+				_start_boss()
+		Phase.OVERTIME:
+			overtime += delta
+
+
+func _progress() -> float:
+	return clampf(1.0 - time_left / stage_duration, 0.0, 1.0)
+
+
+func _health_multiplier() -> float:
+	var p := _progress()
+	var wave_mult := 1.0 + 3.0 * p + 3.0 * p * p
+	if phase == Phase.OVERTIME:
+		wave_mult *= pow(OVERTIME_HEALTH_BASE, overtime / OVERTIME_HEALTH_PERIOD)
+	return wave_mult * difficulty
+
+
+func _contact_damage() -> int:
+	var damage := 10.0 * (1.0 + 1.5 * _progress())
+	if phase == Phase.OVERTIME:
+		damage *= 1.0 + overtime / OVERTIME_DAMAGE_PERIOD
+	return int(damage * difficulty)
+
+
+func _speed_multiplier() -> float:
+	var bonus := 0.6 * _progress()
+	if phase == Phase.OVERTIME:
+		bonus += minf(overtime / 120.0, 0.6)
+	return 1.0 + bonus
+
+
 func _target_count() -> int:
-	if _boss != null or _boss_pending:
-		return 4
-	return mini(base_slimes + int(elapsed / 12.0) + _player_level / 2, max_slimes)
+	match phase:
+		Phase.BOSS:
+			return BOSS_PHASE_SLIMES
+		Phase.OVERTIME:
+			return mini(max_wave_slimes + int(overtime * 0.5), max_overtime_slimes)
+	var count := int(lerpf(base_slimes, max_wave_slimes, _progress())) + _player_level / 3
+	return mini(count, max_wave_slimes)
+
+
+func _spawn_interval() -> float:
+	if phase == Phase.OVERTIME:
+		return maxf(0.12, 0.4 - overtime / 300.0)
+	return 0.5
+
+
+func _spawn_batch() -> int:
+	if phase == Phase.OVERTIME:
+		return 1 + int(overtime / 40.0)
+	return 1
+
+
+func _horde_interval() -> float:
+	if phase == Phase.OVERTIME:
+		return maxf(8.0, 16.0 - overtime / 30.0)
+	return lerpf(horde_interval_start, horde_interval_end, _progress())
+
+
+func _horde_size() -> int:
+	if phase == Phase.OVERTIME:
+		return mini(32 + int(overtime / 5.0), 60)
+	return mini(10 + _player_level * 2 + int(_progress() * 20.0), 32)
 
 
 func _alive_slimes() -> int:
@@ -101,9 +176,9 @@ func _spawn_slime(at: Vector2, horde: bool) -> void:
 	slime.target = _player
 	slime.position = at
 	var health: HealthComponent = slime.get_node("HealthComponent")
-	health.max_health = int(30.0 * (1.0 + elapsed / 90.0))
-	slime.hop_speed *= 1.0 + minf(elapsed / 200.0, 0.6)
-	slime.contact_damage = 10 + int(elapsed / 60.0) * 2
+	health.max_health = int(30.0 * _health_multiplier())
+	slime.hop_speed *= _speed_multiplier()
+	slime.contact_damage = _contact_damage()
 	if horde:
 		slime.horde = true
 		slime.detection_range = 5000.0
@@ -113,13 +188,12 @@ func _spawn_slime(at: Vector2, horde: bool) -> void:
 
 
 func _start_horde() -> void:
-	_horde_timer = horde_interval
+	_horde_timer = _horde_interval()
 	horde_incoming.emit()
-	var size := mini(10 + _player_level * 2 + int(elapsed / 10.0), 32)
 	var center := _random_spawn_point(520.0)
 	var area := _arena.bounds.grow(-60.0)
-	for k in size:
-		if _stopped:
+	for k in _horde_size():
+		if _stopped or _alive_slimes() >= hard_cap_slimes:
 			return
 		var at := center + Vector2.from_angle(randf() * TAU) * randf_range(0.0, 170.0)
 		at = at.clamp(area.position, area.end)
@@ -131,7 +205,6 @@ func _start_horde() -> void:
 
 
 func _start_boss() -> void:
-	_boss_pending = true
 	boss_incoming.emit()
 	await get_tree().create_timer(2.0, false).timeout
 	if _stopped:
@@ -145,11 +218,9 @@ func _start_boss() -> void:
 	boss.arena_bounds = _arena.bounds
 	boss.position = _arena.bounds.get_center()
 	var health: HealthComponent = boss.get_node("HealthComponent")
-	health.max_health = int(health.max_health * (1.0 + 0.6 * _boss_count))
+	health.max_health = int(health.max_health * difficulty)
 	_entities.add_child(boss)
 	boss.died.connect(_on_boss_died)
-	_boss = boss
-	_boss_pending = false
 	boss_spawned.emit(boss)
 	boss.play_intro()
 
@@ -160,12 +231,17 @@ func _on_enemy_died(enemy: Node2D) -> void:
 
 func _on_boss_died(boss: Node2D) -> void:
 	enemy_killed.emit(boss)
-	_boss = null
-	_boss_count += 1
-	_next_boss_score = _last_score + boss_score_step
-	_horde_timer = horde_interval
-	await get_tree().create_timer(1.4, false).timeout
+	await get_tree().create_timer(VICTORY_DELAY, false).timeout
+	if _stopped:
+		return
 	boss_defeated.emit()
+	await get_tree().create_timer(OVERTIME_DELAY, false).timeout
+	if _stopped:
+		return
+	phase = Phase.OVERTIME
+	overtime = 0.0
+	_horde_timer = _horde_interval()
+	overtime_started.emit()
 
 
 func _random_spawn_point(min_distance: float) -> Vector2:

@@ -6,6 +6,7 @@ const LIGHT := Color("#FFE6A1")
 const CRIT := Color("#FF9138")
 
 static var _dot_texture: Texture2D
+static var _shrink_curve: Curve
 
 
 static func dot_texture() -> Texture2D:
@@ -22,6 +23,14 @@ static func dot_texture() -> Texture2D:
 		texture.height = 32
 		_dot_texture = texture
 	return _dot_texture
+
+
+static func shrink_curve() -> Curve:
+	if _shrink_curve == null:
+		_shrink_curve = Curve.new()
+		_shrink_curve.add_point(Vector2(0.0, 1.0))
+		_shrink_curve.add_point(Vector2(1.0, 0.0))
+	return _shrink_curve
 
 
 static func burst(parent: Node, at: Vector2, color: Color, amount: int = 12,
@@ -41,10 +50,7 @@ static func burst(parent: Node, at: Vector2, color: Color, amount: int = 12,
 	particles.damping_max = speed * 1.8
 	particles.scale_amount_min = size * 0.5
 	particles.scale_amount_max = size
-	var shrink := Curve.new()
-	shrink.add_point(Vector2(0.0, 1.0))
-	shrink.add_point(Vector2(1.0, 0.0))
-	particles.scale_amount_curve = shrink
+	particles.scale_amount_curve = shrink_curve()
 	particles.color = color
 	particles.z_index = 50
 	parent.add_child(particles)
